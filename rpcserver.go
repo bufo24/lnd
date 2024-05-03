@@ -6691,6 +6691,18 @@ func marshallTopologyChange(topChange *routing.TopologyChange) *lnrpc.GraphTopol
 
 	channelUpdates := make([]*lnrpc.ChannelEdgeUpdate, len(topChange.ChannelEdgeUpdates))
 	for i, channelUpdate := range topChange.ChannelEdgeUpdates {
+		InboundFee := models.InboundFee{
+			Base: channelUpdate.InboundBaseFee,
+			Rate: channelUpdate.InboundFeeRate,
+		}
+
+		var extraData lnwire.ExtraOpaqueData
+
+		inboundFee := InboundFee.ToWire()
+		extraData.PackRecords(&inboundFee)
+
+		customRecords := marshalExtraOpaqueData(extraData)
+
 		channelUpdates[i] = &lnrpc.ChannelEdgeUpdate{
 			ChanId: channelUpdate.ChanID,
 			ChanPoint: &lnrpc.ChannelPoint{
@@ -6707,8 +6719,9 @@ func marshallTopologyChange(topChange *routing.TopologyChange) *lnrpc.GraphTopol
 				FeeBaseMsat:             int64(channelUpdate.BaseFee),
 				FeeRateMilliMsat:        int64(channelUpdate.FeeRate),
 				Disabled:                channelUpdate.Disabled,
-				InboundFeeBaseMsat:      int32(channelUpdate.InboundBaseFee),
-				InboundFeeRateMilliMsat: int32(channelUpdate.InboundFeeRate),
+				InboundFeeBaseMsat:      channelUpdate.InboundBaseFee,
+				InboundFeeRateMilliMsat: channelUpdate.InboundFeeRate,
+				CustomRecords:           customRecords,
 			},
 			AdvertisingNode: encodeKey(channelUpdate.AdvertisingNode),
 			ConnectingNode:  encodeKey(channelUpdate.ConnectingNode),

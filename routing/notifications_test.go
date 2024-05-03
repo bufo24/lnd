@@ -87,8 +87,8 @@ func randEdgePolicy(chanID *lnwire.ShortChannelID,
 		FeeBaseMSat:                      lnwire.MilliSatoshi(prand.Int31()),
 		FeeProportionalMillionths:        lnwire.MilliSatoshi(prand.Int31()),
 		ToNode:                           node.PubKeyBytes,
-		InboundFeeBaseMSat:               lnwire.MilliSatoshi(prand.Int31()),
-		InboundFeeProportionalMillionths: lnwire.MilliSatoshi(prand.Int31()),
+		InboundFeeBaseMSat:               prand.Int31() * -1,
+		InboundFeeProportionalMillionths: prand.Int31() * -1,
 	}
 }
 

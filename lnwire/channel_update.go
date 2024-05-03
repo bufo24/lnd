@@ -118,6 +118,15 @@ type ChannelUpdate struct {
 	// fill out the full maximum transport message size. These fields can
 	// be used to specify optional data such as custom TLV fields.
 	ExtraOpaqueData ExtraOpaqueData
+
+	// BaseFee is the base fee that must be used for incoming HTLC's to
+	// this particular channel. This value will be tacked onto the required
+	// for a payment independent of the size of the payment.
+	InboundBaseFee int32
+
+	// FeeRate is the fee rate that will be charged per millionth of a
+	// satoshi.
+	InboundFeeRate int32
 }
 
 // A compile time check to ensure ChannelUpdate implements the lnwire.Message

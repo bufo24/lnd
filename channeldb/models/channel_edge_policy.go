@@ -62,12 +62,12 @@ type ChannelEdgePolicy struct {
 
 	// InboundFeeBaseMSat is the base HTLC fee that will be subtracted for
 	// forwarding ANY INCOMING HTLC, expressed in mSAT's.
-	InboundFeeBaseMSat lnwire.MilliSatoshi
+	InboundFeeBaseMSat int32
 
 	// InboundFeeProportionalMillionths is the rate that the node will
 	// subtract for incoming HTLCs for each millionth of a satoshi
 	// forwarded.
-	InboundFeeProportionalMillionths lnwire.MilliSatoshi
+	InboundFeeProportionalMillionths int32
 
 	// ToNode is the public key of the node that this directed edge leads
 	// to. Using this pub key, the channel graph can further be traversed.

@@ -189,6 +189,9 @@ func (r *Manager) updateEdge(tx kvdb.RTx, chanPoint wire.OutPoint,
 
 	edge.TimeLockDelta = uint16(newSchema.TimeLockDelta)
 
+	edge.InboundFeeBaseMSat = newSchema.InboundFee.Base
+	edge.InboundFeeProportionalMillionths = newSchema.InboundFee.Rate
+
 	// Retrieve negotiated channel htlc amt limits.
 	amtMin, amtMax, err := r.getHtlcAmtLimits(tx, chanPoint)
 	if err != nil {
