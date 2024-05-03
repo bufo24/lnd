@@ -78,15 +78,17 @@ func randEdgePolicy(chanID *lnwire.ShortChannelID,
 	node *channeldb.LightningNode) *models.ChannelEdgePolicy {
 
 	return &models.ChannelEdgePolicy{
-		SigBytes:                  testSig.Serialize(),
-		ChannelID:                 chanID.ToUint64(),
-		LastUpdate:                time.Unix(int64(prand.Int31()), 0),
-		TimeLockDelta:             uint16(prand.Int63()),
-		MinHTLC:                   lnwire.MilliSatoshi(prand.Int31()),
-		MaxHTLC:                   lnwire.MilliSatoshi(prand.Int31()),
-		FeeBaseMSat:               lnwire.MilliSatoshi(prand.Int31()),
-		FeeProportionalMillionths: lnwire.MilliSatoshi(prand.Int31()),
-		ToNode:                    node.PubKeyBytes,
+		SigBytes:                         testSig.Serialize(),
+		ChannelID:                        chanID.ToUint64(),
+		LastUpdate:                       time.Unix(int64(prand.Int31()), 0),
+		TimeLockDelta:                    uint16(prand.Int63()),
+		MinHTLC:                          lnwire.MilliSatoshi(prand.Int31()),
+		MaxHTLC:                          lnwire.MilliSatoshi(prand.Int31()),
+		FeeBaseMSat:                      lnwire.MilliSatoshi(prand.Int31()),
+		FeeProportionalMillionths:        lnwire.MilliSatoshi(prand.Int31()),
+		ToNode:                           node.PubKeyBytes,
+		InboundFeeBaseMSat:               lnwire.MilliSatoshi(prand.Int31()),
+		InboundFeeProportionalMillionths: lnwire.MilliSatoshi(prand.Int31()),
 	}
 }
 
@@ -510,6 +512,16 @@ func TestEdgeUpdateNotification(t *testing.T) {
 			t.Fatalf("time lock delta of edge doesn't match: "+
 				"expected %v, got %v", edgeAnn.TimeLockDelta,
 				edgeUpdate.TimeLockDelta)
+		}
+		if edgeUpdate.InboundBaseFee != edgeAnn.InboundFeeBaseMSat {
+			t.Fatalf("inbound base fee of edge doesn't match: "+
+				"expected %v, got %v", edgeAnn.InboundFeeBaseMSat,
+				edgeUpdate.InboundBaseFee)
+		}
+		if edgeUpdate.InboundFeeRate != edgeAnn.InboundFeeProportionalMillionths {
+			t.Fatalf("inbound fee rate of edge doesn't match: "+
+				"expected %v, got %v", edgeAnn.InboundFeeProportionalMillionths,
+				edgeUpdate.InboundFeeRate)
 		}
 	}
 

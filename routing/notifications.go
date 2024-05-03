@@ -301,6 +301,14 @@ type ChannelEdgeUpdate struct {
 	// Disabled, if true, signals that the channel is unavailable to relay
 	// payments.
 	Disabled bool
+
+	// InboundBaseFee is the base fee that will subtracted for all incoming
+	// HTLC's forwarded across the this channel direction.
+	InboundBaseFee lnwire.MilliSatoshi
+
+	// InboundFeeRate is the fee rate that will be subtracted for all
+	// incoming HTLC's forwarded across this channel direction.
+	InboundFeeRate lnwire.MilliSatoshi
 }
 
 // appendTopologyChange appends the passed update message to the passed
@@ -379,6 +387,8 @@ func addToTopologyChange(graph *channeldb.ChannelGraph, update *TopologyChange,
 			AdvertisingNode: aNode,
 			ConnectingNode:  cNode,
 			Disabled:        m.ChannelFlags&lnwire.ChanUpdateDisabled != 0,
+			InboundFeeRate:  m.InboundFeeProportionalMillionths,
+			InboundBaseFee:  m.InboundFeeBaseMSat,
 		}
 
 		// TODO(roasbeef): add bit to toggle
