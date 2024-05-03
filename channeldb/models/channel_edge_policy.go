@@ -67,7 +67,7 @@ type ChannelEdgePolicy struct {
 	// InboundFeeProportionalMillionths is the rate that the node will
 	// subtract for incoming HTLCs for each millionth of a satoshi
 	// forwarded.
-	InboundFeeProportionalMillionths int32
+	InboundFeePPM int32
 
 	// ToNode is the public key of the node that this directed edge leads
 	// to. Using this pub key, the channel graph can further be traversed.
