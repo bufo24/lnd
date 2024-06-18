@@ -36,6 +36,8 @@ const (
 	MsgClosingSigned                       = 39
 	MsgClosingComplete                     = 40
 	MsgClosingSig                          = 41
+	MsgOpenChannel2                        = 64
+	MsgAcceptChannel2                      = 65
 	MsgDynPropose                          = 111
 	MsgDynAck                              = 113
 	MsgDynReject                           = 115
@@ -100,6 +102,10 @@ func (t MessageType) String() string {
 		return "Shutdown"
 	case MsgClosingSigned:
 		return "ClosingSigned"
+	case MsgOpenChannel2:
+		return "OpenChannel2"
+	case MsgAcceptChannel2:
+		return "AcceptChannel2"
 	case MsgDynPropose:
 		return "DynPropose"
 	case MsgDynAck:
@@ -227,6 +233,10 @@ func makeEmptyMessage(msgType MessageType) (Message, error) {
 		msg = &Shutdown{}
 	case MsgClosingSigned:
 		msg = &ClosingSigned{}
+	case MsgOpenChannel2:
+		msg = &OpenChannel2{}
+	case MsgAcceptChannel2:
+		msg = &AcceptChannel2{}
 	case MsgDynPropose:
 		msg = &DynPropose{}
 	case MsgDynAck:
